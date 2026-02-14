@@ -81,12 +81,11 @@ unique_ptr<FunctionData> ArrowIPCTableFunction::ArrowScanBind(
     } else {
       return_types.emplace_back(arrow_type->GetDuckType());
     }
-    res->arrow_table.AddColumn(col_idx, std::move(arrow_type));
-    auto format = string(schema.format);
     auto name = string(schema.name);
     if (name.empty()) {
       name = string("v") + to_string(col_idx);
     }
+    res->arrow_table.AddColumn(col_idx, std::move(arrow_type), name);
     names.push_back(name);
   }
   QueryResult::DeduplicateColumns(names);
